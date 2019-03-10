@@ -395,51 +395,45 @@ boolean Plugin_110(byte function, struct EventStruct *event, String& string)
                 break;
             }
 
-            // Wait until new data is available.
-            int timeOut = serialTimeOut;
-            while (!Serial.available() && timeOut >= 0) {
-                delay(1);
-                timeOut--;
-
-                if (timeOut == 0) {
-                    addLog(LOG_LEVEL_DEBUG, "P1 debug: timeout reached");
-                    state = FAILURE;
-                    break;
-                }
-            }
+//            // Wait until new data is available.
+//            int timeOut = serialTimeOut;
+//            while (!Serial.available() && timeOut >= 0) {
+//                delay(1);
+//                timeOut--;
+//
+//                if (timeOut == 0) {
+//                    addLog(LOG_LEVEL_DEBUG, "P1 debug: timeout reached");
+//                    state = FAILURE;
+//                    break;
+//                }
+//            }
         }
 
         digitalWrite(STATUS_LED,0);
-        addLog(LOG_LEVEL_DEBUG, inputString);
 
-
-
-        // Parse the complete telegram
-        parse_P1();
-
-        
-        if (state != DONE){
-          // The state is not DONE, clear the input stream and flush the serial connection.
+        if (state == DONE) {
+           addLog(LOG_LEVEL_DEBUG, inputString);
+                   
+            parse_P1(); // Parse the complete telegram
+ 
+             // Push it to Domoticz if the reportInterval has been reached
+             frame++;
+            if (frame >= reportInterval ) {
+                if (P1GatewayClient.connected()){
+                  P1GatewayClient.write((const uint8_t*)serial_buf, bytes_read);
+                  P1GatewayClient.flush();
+                  addLog(LOG_LEVEL_INFO,"P1 msg: pushed data to Domoticz");
+                } else {
+                  addLog(LOG_LEVEL_DEBUG,"P1 msg: data could not be pushed since there is no connection to Domoticz");
+                }
+              frame = 0;
+            }
+            blinkLED();
+        } else {           // The state is not DONE, clear the input stream and flush the serial connection.
              clearInputStream();
              Serial.flush();
              break;
         }
-
-        
-        // Push it to Domoticz if the reportInterval has been reached
-        frame++;
-        if (frame >= reportInterval ) {
-            if (P1GatewayClient.connected()){
-                P1GatewayClient.write((const uint8_t*)serial_buf, bytes_read);
-                P1GatewayClient.flush();
-                addLog(LOG_LEVEL_INFO,"P1 msg: pushed data to Domoticz");
-            } else {
-                addLog(LOG_LEVEL_DEBUG,"P1 msg: data could not be pushed since there is no connection to Domoticz");
-            }
-            frame = 0;
-        }
-           
-        blinkLED();
         success = true;
         break;
      }
@@ -565,14 +559,14 @@ void parse_P1(){
                         tempPos = inputString.indexOf("*kW)", pos270);
                         if (tempPos != -1) T270 = trim_zero(inputString.substring(pos270 + 10, tempPos+3));
 
-                        pos2421 = inputString.indexOf("0-1:24.2.1", 0);
-
-            if (DSMR4){
+                        
+                 pos2421 = inputString.indexOf(":24.2.1", 0); // 0-1:24.2.1  of  0-2:24.2.1
+                    if (DSMR4){
                        // 0-1:24.2.1(160516110000S)(06303.228*m3)
                         tempPos = inputString.indexOf(")(", pos2421);
                         tempPos2 = inputString.indexOf("*m3", tempPos);
                         if (tempPos2 != -1) G2421 = trim_zero(inputString.substring(tempPos + 2, tempPos2+3));
-            } else {
+                    } else {
                     // 0-1:24.2.1(160516110000S)(*m3)(06303.228)!
                      // 0-1:24.2.1(160516110000S)(*m3)(06303.228)!
                        tempPos = inputString.indexOf("(m3)", pos2421);
@@ -581,7 +575,8 @@ void parse_P1(){
                                                
                         if (tempPos2 != -1) G2421 = trim_zero(inputString.substring(tempPos+1, tempPos2 - 1));
                         G2421 += "*m3";
-            }
+                    }
+
                             data += "G: ";
                             data += G2421;
                             
