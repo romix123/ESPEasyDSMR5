@@ -121,8 +121,8 @@
 #define ESP_PROJECT_PID           2015050101L
 #define ESP_EASY
 #define VERSION                             9
-#define BUILD                             128
-#define BUILD_NOTES                        "10 Mar 2019"
+#define BUILD                             129
+#define BUILD_NOTES                        "19 Apr 2019"
 #define FEATURE_SPIFFS                  false
 
 #define CPLUGIN_PROTOCOL_ADD                1
