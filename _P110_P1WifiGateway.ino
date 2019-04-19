@@ -482,6 +482,7 @@ void handle_P1monitor(){
   str += "<TR><TD>Totaal verbruik tarief 1: </TD>";
     str += T181;
 //         str += F("<BR>");
+  str += "</TD></TR> <TR><TD>Totaal verbruik tarief 2: </TD><TD>";
     str += T182;
 //         str += F("<BR>");
   str += "<TR><TD>Teruggeleverd tarief 1: </TD><TD>";
