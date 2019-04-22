@@ -482,23 +482,23 @@ void handle_P1monitor(){
   str += "<TR><TD>Totaal verbruik tarief 1: </TD><TD><span id=\"totaal1\">";
     str += T181;
 //         str += F("<BR>");
-  str += "</span></TD></TR> <TR><TD>Totaal verbruik tarief 2: </TD><TD><span id=\"totaal2\">";
+  str += "</span> kWh</TD></TR> <TR><TD>Totaal verbruik tarief 2: </TD><TD><span id=\"totaal2\">";
     str += T182;
 //         str += F("<BR>");
-  str += "</span></TD></TR><TR><TD>Teruggeleverd tarief 1: </TD><TD><span id=\"retour1\">";
+  str += "</span> kWh</TD></TR><TR><TD>Teruggeleverd tarief 1: </TD><TD><span id=\"retour1\">";
     str += T281;
  //        str += F("<BR>");
-   str += "</span></TD></TR><TR><TD>Teruggeleverd tarief 2: </TD><TD><span id=\"retour2\">";
+   str += "</span> kWh</TD></TR><TR><TD>Teruggeleverd tarief 2: </TD><TD><span id=\"retour2\">";
     str += T282;
 //         str += F("<BR>");
-  str += "</span></TD></TR><TR><TD>Actueel verbruik         : </TD><TD><span id=\"huidig\">";
+  str += "</span> kWh</TD></TR><TR><TD>Actueel verbruik         : </TD><TD><span id=\"huidig\">";
     str += T170;
   //       str += F("<BR>");
-   str += "</span></TD></TR> <TR><TD>Huidige teruglevering   : </TD><TD><span id=\"retour\">";
+   str += "</span> kW</TD></TR> <TR><TD>Huidige teruglevering   : </TD><TD><span id=\"retour\">";
     str += T270;
-    str += "</span></TD></TR> <TR><TD>Totaal gasverbuik   : </TD><TD><span id=\"gas\">";
+    str += "</span> kW</TD></TR> <TR><TD>Totaal gasverbuik   : </TD><TD><span id=\"gas\">";
    str += G2421;
- //        str += F("<BR><BR>");
+ //        str += F(" m3<BR><BR>");
    //  str += "Input   : ";
    //       str += inputString;
 
@@ -532,7 +532,7 @@ void parse_P1(){
                         pos182 = inputString.indexOf("1-0:1.8.2", 0);
                         tempPos = inputString.indexOf("*kWh)", pos182);
                         if (tempPos != -1)
-                            T182 = trim_zero(inputString.substring(pos182 + 10, tempPos + 4));
+                            T182 = trim_zero(inputString.substring(pos182 + 10, tempPos)); // + 4));
 
                             data += "T2: ";
                             data += T182;
@@ -541,15 +541,15 @@ void parse_P1(){
                          pos281 = inputString.indexOf("1-0:2.8.1", 0);
                         tempPos = inputString.indexOf("*kWh)", pos281);
                         if (tempPos != -1)
-                            T281 = trim_zero(inputString.substring(pos281 + 10, tempPos + 4));
+                            T281 = trim_zero(inputString.substring(pos281 + 10, tempPos));//  + 4));
 
                          pos282 = inputString.indexOf("1-0:2.8.2", 0);
                         tempPos = inputString.indexOf("*kWh)", pos282);
-                        if (tempPos != -1) T282 = trim_zero(inputString.substring(pos282 + 10, tempPos + 4));
+                        if (tempPos != -1) T282 = trim_zero(inputString.substring(pos282 + 10, tempPos)); // + 4));
                         
                         pos170 = inputString.indexOf("1-0:1.7.0", 0);
                         tempPos = inputString.indexOf("*kW)", pos170);
-                        if (tempPos != -1) T170 = trim_zero(inputString.substring(pos170 + 10, tempPos+3));
+                        if (tempPos != -1) T170 = trim_zero(inputString.substring(pos170 + 10, tempPos)); // +3));
 
                             data += "Huidig: ";
                             data += T170;
@@ -557,7 +557,7 @@ void parse_P1(){
                             
                         pos270 = inputString.indexOf("1-0:2.7.0", 0);
                         tempPos = inputString.indexOf("*kW)", pos270);
-                        if (tempPos != -1) T270 = trim_zero(inputString.substring(pos270 + 10, tempPos+3));
+                        if (tempPos != -1) T270 = trim_zero(inputString.substring(pos270 + 10, tempPos)); //+3));
 
                         
                  pos2421 = inputString.indexOf(":24.2.1", 0); // 0-1:24.2.1  of  0-2:24.2.1
@@ -565,7 +565,7 @@ void parse_P1(){
                        // 0-1:24.2.1(160516110000S)(06303.228*m3)
                         tempPos = inputString.indexOf(")(", pos2421);
                         tempPos2 = inputString.indexOf("*m3", tempPos);
-                        if (tempPos2 != -1) G2421 = trim_zero(inputString.substring(tempPos + 2, tempPos2+3));
+                        if (tempPos2 != -1) G2421 = trim_zero(inputString.substring(tempPos + 2, tempPos2)); //+3));
                     } else {
                     // 0-1:24.2.1(160516110000S)(*m3)(06303.228)!
                      // 0-1:24.2.1(160516110000S)(*m3)(06303.228)!
@@ -574,7 +574,7 @@ void parse_P1(){
                        tempPos2 = inputString.indexOf(")", tempPos);
                                                
                         if (tempPos2 != -1) G2421 = trim_zero(inputString.substring(tempPos+1, tempPos2 - 1));
-                        G2421 += "*m3";
+                        //G2421 += "*m3";
                     }
 
                             data += "G: ";
