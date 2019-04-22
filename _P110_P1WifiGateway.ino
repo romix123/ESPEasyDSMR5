@@ -498,11 +498,11 @@ void handle_P1monitor(){
     str += T270;
     str += "</span> kW</TD></TR> <TR><TD>Totaal gasverbuik   : </TD><TD><span id=\"gas\">";
    str += G2421;
- //        str += F(" m3<BR><BR>");
+ //        str += F(" <BR><BR>");
    //  str += "Input   : ";
    //       str += inputString;
 
- str += F("</span></TD></TR> </tbody></table>");
+ str += F("</span> m3</TD></TR> </tbody></table>");
   addFooter(str);
   WebServer.send(200, "text/html", str);
  // free(TempString);
@@ -524,7 +524,7 @@ void parse_P1(){
                         pos181 = inputString.indexOf("1-0:1.8.1", 0);
                         tempPos = inputString.indexOf("*kWh)", pos181);
                         if (tempPos != -1)
-                            T181 = trim_zero(inputString.substring(pos181 + 10, tempPos + 4));
+                            T181 = trim_zero(inputString.substring(pos181 + 10, tempPos)); // + 4));
 
                             data += T181;
                             data += " - ";
