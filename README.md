@@ -10,6 +10,7 @@ Meer informatie is te vinden op http://esp8266thingies.nl
 Deze branch van ESPEasy omvat de plug-in die het eigenlijke uitlezen van de P1 poort verzorgt, data valideert en toont in de plug-in, alsmede de data afgeeft aan Domoticz.
 Om een net overzicht van de data in de webinterface te verzorgen is de file webserer.ino van ESPEasy gepatcht, vandaar dat ik een branch bijhoud.
 
+<<<<<<< HEAD
 Nieuws
 22 april
 ipaddres/p1 geeft nu de meterwaarden tussen span elementen <span id=“totaal1”>waarde</span>kWh
@@ -17,3 +18,6 @@ ipaddres/p1 geeft nu de meterwaarden tussen span elementen <span id=“totaal1�
 
 
 romix@macuser.nl 
+=======
+romix@macuser.nl 
+>>>>>>> origin/master
