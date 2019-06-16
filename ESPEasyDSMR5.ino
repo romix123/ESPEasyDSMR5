@@ -108,7 +108,7 @@
 #define UNIT                0
 
 #define FEATURE_TIME                     true
-#define FEATURE_SSDP                     true
+#define FEATURE_SSDP                     false
 
 // Enable FEATURE_ADC_VCC to measure supply voltage using the analog pin
 // Please note that the TOUT pin has to be disconnected in this mode
@@ -121,8 +121,8 @@
 #define ESP_PROJECT_PID           2015050101L
 #define ESP_EASY
 #define VERSION                             9
-#define BUILD                             130
-#define BUILD_NOTES                        "22 Apr 2019"
+#define BUILD                             131
+#define BUILD_NOTES                        "18 May 2019"
 #define FEATURE_SPIFFS                  false
 
 #define CPLUGIN_PROTOCOL_ADD                1
@@ -222,7 +222,7 @@
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
 #include <LiquidCrystal_I2C.h>
-#include <Servo.h>
+//#include <Servo.h>
 #if FEATURE_SPIFFS
 #include <FS.h>
 #endif
@@ -249,8 +249,8 @@ const byte DNS_PORT = 53;
 IPAddress apIP(192, 168, 4, 1);
 DNSServer dnsServer;
 
-Servo myservo1;
-Servo myservo2;
+//Servo myservo1;
+//Servo myservo2;
 
 // MQTT client
 WiFiClient mqtt;
@@ -672,7 +672,12 @@ void loop()
       runOncePerSecond();
 
     if (millis() > timerwd)
+    {
       runEach30Seconds();
+       if (WiFi.status() != WL_CONNECTED){
+        WifiConnect(1);
+      }
+    }
 
     backgroundtasks();
 
@@ -1003,5 +1008,3 @@ void backgroundtasks()
   statusLED(false);
   yield();
 }
-
-

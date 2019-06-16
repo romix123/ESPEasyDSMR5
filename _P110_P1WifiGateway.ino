@@ -27,8 +27,8 @@ int reportInterval = 1;  // rapporteer ieder xe frame
 int frame = 0; //aantal telegrammen sinds vorige report
 
 // define buffers, large, indeed. The entire datagram checksum will be checked at once
-#define BUFFER_SIZE 1000
-#define NETBUF_SIZE 1000
+#define BUFFER_SIZE 1200
+#define NETBUF_SIZE 1200
 char serial_buf[BUFFER_SIZE];
 unsigned int bytes_read = 0; 
 String inputString = "";
